@@ -1,5 +1,5 @@
 mod day1;
 
 fn main() {
-    println!("Hello, world!");
+    println!("Day1 1st Answer {}", day1::question1());
 }
