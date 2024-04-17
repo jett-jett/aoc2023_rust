@@ -1,10 +1,11 @@
 
-pub fn q1() -> i32 {
 
+pub fn q1() -> i32 {
     include_bytes!("../input/day2.txt").split(|b| b == &b'\n')
         .enumerate()
-        .filter_map(|(game_id, line)| {
-            let mut rgb = [0,0,0,0];
+        .filter_map(|(game_id,line)| {
+            let mut rgb = [0,0,0];
+            let line = line.strip_suffix(&[b'\r']).unwrap_or(line);
             line.splitn(2, |b| b == &b':')
                 .nth(1)
                 .unwrap()
@@ -14,9 +15,9 @@ pub fn q1() -> i32 {
                         b"red" => 0usize,
                         b"green" => 1,
                         b"blue" => 2,
-                        _ => 3
+                        _ => unreachable!()
                     };
-                    if i < 4 {rgb[i] = rgb[i].max(atoi::atoi(&item[1..]).unwrap());} else{ rgb[i] = 0;}
+                    rgb[i] = rgb[i].max(atoi::atoi(&item[1..]).unwrap());
                     rgb[i] <= 12 + i as u32
             })
             .then_some(game_id +1)
@@ -27,9 +28,9 @@ pub fn q1() -> i32 {
 pub fn q2() -> i32 {
     include_bytes!("../input/day2.txt").split(|b| b == &b'\n')
         .enumerate()
-        .filter_map(|(_, mut line)| {
+        .filter_map(|(_, line)| {
             let mut rgbmax = [0,0,0];
-            line = line.strip_suffix(&[b'\r']).unwrap_or(line);
+            let line = line.strip_suffix(&[b'\r']).unwrap_or(line);
             line.splitn(2, |b| b == &b':')
                 .nth(1)
                 .unwrap()
